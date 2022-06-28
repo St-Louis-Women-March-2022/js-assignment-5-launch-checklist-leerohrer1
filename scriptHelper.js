@@ -1,5 +1,6 @@
 // Write your helper functions here!
-import 'isomorphic-fetch';
+
+const { format } = require("path");
 
 function addDestinationInfo(
   document,
@@ -31,20 +32,24 @@ function validateInput(testInput) {
 }
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-  window.addEventListener('load', function () {
-    let form = document.querySelector('form');
-    form.addEventListener('submit', function (event) {
-      if (
-        validateInput(pilot) === 'Is a String' &&
-        validateInput(copilot) === 'Is a String' &&
-        validateInput(fuelLevel) === 'Is a Number' &&
-        validateInput(cargoLevel) === 'Is a Number' &&
-        fuelLevel >= 10000 &&
-        cargoLevel <= 10000
-      ) {
-        list.style.visibility = 'visible';
-        h2.style.color = 'rgb(65, 159, 106)';
-        list.innerHTML = `
+  let form = document.querySelector('form');
+  let pilotInput = document.querySelector('input[name=pilotName]');
+  let copilotInput = document.querySelector('input[name=copilotName]');
+  let fuelLevelInput = document.querySelector('input[name=fuelLevel]');
+  let cargoLevelInput = document.querySelector('input[name=cargoLevel]');
+
+  form.addEventListener('submit', function (event) {
+    if (
+      validateInput(pilotInput.value) === 'Is a String' &&
+      validateInput(copilotInput.value) === 'Is a String' &&
+      validateInput(fuelLevelInput.value) === 'Is a Number' &&
+      validateInput(cargoLevelInput.value) === 'Is a Number' &&
+      fuelLevel >= 10000 &&
+      cargoLevel <= 10000
+    ) {
+      list.style.visibility = 'visible';
+      h2.style.color = 'rgb(65, 159, 106)';
+      list.innerHTML = `
         <div id="launchStatusCheck">
             <h2 id="launchStatus" data-testid="launchStatus">Shuttle is Ready for Launch</h2>
             <div  id="faultyItems" data-testid="faultyItems">
@@ -57,17 +62,17 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
             </div>
         </div>
         `;
-      } else if (
-        validateInput(pilot) === 'Is a String' &&
-        validateInput(copilot) === 'Is a String' &&
-        validateInput(fuelLevel) === 'Is a Number' &&
-        validateInput(cargoLevel) === 'Is a Number' &&
-        fuelLevel < 10000 &&
-        cargoLevel <= 10000
-      ) {
-        list.style.visibility = 'visible';
-        h2.style.color = 'rgb(199, 37, 78)';
-        list.innerHTML = `
+    } else if (
+      validateInput(pilot) === 'Is a String' &&
+      validateInput(copilot) === 'Is a String' &&
+      validateInput(fuelLevel) === 'Is a Number' &&
+      validateInput(cargoLevel) === 'Is a Number' &&
+      fuelLevel < 10000 &&
+      cargoLevel <= 10000
+    ) {
+      list.style.visibility = 'visible';
+      h2.style.color = 'rgb(199, 37, 78)';
+      list.innerHTML = `
         <div id="launchStatusCheck">
             <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
             <div  id="faultyItems" data-testid="faultyItems">
@@ -80,17 +85,17 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
             </div>
         </div>
         `;
-      } else if (
-        validateInput(pilot) === 'Is a String' &&
-        validateInput(copilot) === 'Is a String' &&
-        validateInput(fuelLevel) === 'Is a Number' &&
-        validateInput(cargoLevel) === 'Is a Number' &&
-        fuelLevel < 10000 &&
-        cargoLevel > 10000
-      ) {
-        list.style.visibility = 'visible';
-        h2.style.color = 'rgb(199, 37, 78)';
-        list.innerHTML = `
+    } else if (
+      validateInput(pilot) === 'Is a String' &&
+      validateInput(copilot) === 'Is a String' &&
+      validateInput(fuelLevel) === 'Is a Number' &&
+      validateInput(cargoLevel) === 'Is a Number' &&
+      fuelLevel < 10000 &&
+      cargoLevel > 10000
+    ) {
+      list.style.visibility = 'visible';
+      h2.style.color = 'rgb(199, 37, 78)';
+      list.innerHTML = `
         <div id="launchStatusCheck">
             <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
             <div  id="faultyItems" data-testid="faultyItems">
@@ -103,17 +108,17 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
             </div>
         </div>
         `;
-      } else if (
-        validateInput(pilot) === 'Is a String' &&
-        validateInput(copilot) === 'Is a String' &&
-        validateInput(fuelLevel) === 'Is a Number' &&
-        validateInput(cargoLevel) === 'Is a Number' &&
-        fuelLevel >= 10000 &&
-        cargoLevel > 10000
-      ) {
-        list.style.visibility = 'visible';
-        h2.style.color = 'rgb(199, 37, 78)';
-        list.innerHTML = `
+    } else if (
+      validateInput(pilot) === 'Is a String' &&
+      validateInput(copilot) === 'Is a String' &&
+      validateInput(fuelLevel) === 'Is a Number' &&
+      validateInput(cargoLevel) === 'Is a Number' &&
+      fuelLevel >= 10000 &&
+      cargoLevel > 10000
+    ) {
+      list.style.visibility = 'visible';
+      h2.style.color = 'rgb(199, 37, 78)';
+      list.innerHTML = `
         <div id="launchStatusCheck">
             <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
             <div  id="faultyItems" data-testid="faultyItems">
@@ -126,16 +131,15 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
             </div>
         </div>
         `;
-      } else if (
-        validateInput(pilot) === 'Empty' ||
-        validateInput(copilot) === 'Empty' ||
-        validateInput(fuelLevel) === 'Not a Number' ||
-        validateInput(cargoLevel) === 'Not a Number'
-      ) {
-        document.alert('You must complete all fields of the checklist form!');
-        event.preventDefault();
-      }
-    });
+    } else if (
+      validateInput(pilotInput.value) === 'Empty' ||
+      validateInput(copilotInput.value) === 'Empty' ||
+      validateInput(fuelLevelInput.value) === 'Not a Number' ||
+      validateInput(cargoLevelInput.value) === 'Not a Number'
+    ) {
+      document.alert('You must complete all fields of the checklist form!');
+      event.preventDefault();
+    }
   });
 }
 
@@ -143,9 +147,9 @@ async function myFetch() {
   let planetsReturned;
 
   planetsReturned = await fetch(
-   'https://handlers.education.launchcode.org/static/planets.json'
+    'https://handlers.education.launchcode.org/static/planets.json'
   ).then(function (response) {
-    return response.json;
+    return response.json();
   });
 
   return planetsReturned;
@@ -155,13 +159,7 @@ function pickPlanet(planets) {
   return planets[Math.floor(Math.random() * planets.length)];
 }
 
-const _addDestinationInfo = addDestinationInfo;
-export { _addDestinationInfo as addDestinationInfo };
-const _validateInput = validateInput;
-export { _validateInput as validateInput };
-const _formSubmission = formSubmission;
-export { _formSubmission as formSubmission };
-const _pickPlanet = pickPlanet;
-export { _pickPlanet as pickPlanet };
-const _myFetch = myFetch;
-export { _myFetch as myFetch };
+module.exports.addDestinationInfo() = addDestinationInfo;
+module.exports.pickPlanet = pickPlanet;
+module.exports.myFetch = myFetch;
+module.exports.formSubmission = formSubmission;

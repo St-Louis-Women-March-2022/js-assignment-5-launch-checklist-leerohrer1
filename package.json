@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "grading.js",
+  "type":"module",
   "scripts": {
     "test": "jasmine",
     "test-grading-dom": "jasmine spec/grading-dom.spec.js",
