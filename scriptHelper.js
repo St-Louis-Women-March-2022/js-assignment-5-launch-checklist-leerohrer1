@@ -1,4 +1,5 @@
 // Write your helper functions here!
+import fetch from "node-fetch";
 
 function addDestinationInfo(
   document,
