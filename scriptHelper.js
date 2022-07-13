@@ -139,4 +139,7 @@ function pickPlanet(planets) {
   return planets[Math.floor(Math.random() * planets.length)];
 }
 
-export { pickPlanet, myFetch, formSubmission, addDestinationInfo };
+module.exports.addDestinationInfo = addDestinationInfo;
+module.exports.pickPlanet = pickPlanet;
+module.exports.myFetch = myFetch;
+module.exports.formSubmission = formSubmission;
