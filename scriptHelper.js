@@ -1,7 +1,5 @@
 // Write your helper functions here!
 
-const { format } = require("path");
-
 function addDestinationInfo(
   document,
   name,
@@ -32,113 +30,95 @@ function validateInput(testInput) {
 }
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
-  let form = document.querySelector('form');
-  let pilotInput = document.querySelector('input[name=pilotName]');
-  let copilotInput = document.querySelector('input[name=copilotName]');
-  let fuelLevelInput = document.querySelector('input[name=fuelLevel]');
-  let cargoLevelInput = document.querySelector('input[name=cargoLevel]');
+  const form = document.getElementById('form');
+
+  const pilotInput = document.querySelector('input[name=pilotName]');
+  const validatedPilot = validateInput(pilotInput.value);
+  const copilotInput = document.querySelector('input[name=copilotName]');
+  const validatedCopilot = validateInput(copilotInput.value);
+  const fuelLevelInput = document.querySelector('input[name=fuelLevel]');
+  const validatedFuelLevel = validateInput(fuelLevelInput.value);
+  const cargoLevelInput = document.querySelector('input[name=cargoLevel]');
+  const validatedCargoLevel = validateInput(cargoLevelInput.value);
+
+  const pilotStatus = document.getElementById('pilotStatus');
+  const copilotStatus = document.getElementById('copilotStatus');
+  const fuelStatus = document.getElementById('fuelStatus');
+  const cargoStatus = document.getElementById('cargoStatus');
+  const launchStatus = document.getElementById('launchStatus');
+  const faultyItems = document.getElementById('faultyItems');
 
   form.addEventListener('submit', function (event) {
-    if (
-      validateInput(pilotInput.value) === 'Is a String' &&
-      validateInput(copilotInput.value) === 'Is a String' &&
-      validateInput(fuelLevelInput.value) === 'Is a Number' &&
-      validateInput(cargoLevelInput.value) === 'Is a Number' &&
-      fuelLevel >= 10000 &&
-      cargoLevel <= 10000
-    ) {
-      list.style.visibility = 'visible';
-      h2.style.color = 'rgb(65, 159, 106)';
-      list.innerHTML = `
-        <div id="launchStatusCheck">
-            <h2 id="launchStatus" data-testid="launchStatus">Shuttle is Ready for Launch</h2>
-            <div  id="faultyItems" data-testid="faultyItems">
-                <ol>
-                    <li id="pilotStatus" data-testid="pilotStatus">Pilot ${pilot} is ready for launch</li>
-                    <li id="copilotStatus" data-testid="copilotStatus">Co-pilot ${copilot} is ready for launch</li>
-                    <li id="fuelStatus" data-testid="fuelStatus">Fuel level high enough for launch</li>
-                    <li id="cargoStatus" data-testid="cargoStatus">Cargo mass low enough for launch</li>
-                </ol>
-            </div>
-        </div>
-        `;
+    event.preventDefault();
+
+    if (validatedPilot === 'Empty' || validatedPilot === 'Is a Number') {
+      window.alert('That is not a valid pilot name!');
+      faultyItems.style.visibility = 'visible';
+      pilotStatus.innerHTML = 'Pilot is not ready!';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
     } else if (
-      validateInput(pilot) === 'Is a String' &&
-      validateInput(copilot) === 'Is a String' &&
-      validateInput(fuelLevel) === 'Is a Number' &&
-      validateInput(cargoLevel) === 'Is a Number' &&
-      fuelLevel < 10000 &&
-      cargoLevel <= 10000
+      validatedCopilot === 'Empty' ||
+      validatedCopilot === 'Is a Number'
     ) {
-      list.style.visibility = 'visible';
-      h2.style.color = 'rgb(199, 37, 78)';
-      list.innerHTML = `
-        <div id="launchStatusCheck">
-            <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
-            <div  id="faultyItems" data-testid="faultyItems">
-                <ol>
-                    <li id="pilotStatus" data-testid="pilotStatus">Pilot ${pilot} is ready for launch</li>
-                    <li id="copilotStatus" data-testid="copilotStatus">Co-pilot ${copilot} is ready for launch</li>
-                    <li id="fuelStatus" data-testid="fuelStatus">Fuel level too low for launch</li>
-                    <li id="cargoStatus" data-testid="cargoStatus">Cargo mass low enough for launch</li>
-                </ol>
-            </div>
-        </div>
-        `;
+      window.alert('That is not a valid copilot name!');
+      faultyItems.style.visibility = 'visible';
+      copilotStatus.innerHTML = 'Co-Pilot is not ready!';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
     } else if (
-      validateInput(pilot) === 'Is a String' &&
-      validateInput(copilot) === 'Is a String' &&
-      validateInput(fuelLevel) === 'Is a Number' &&
-      validateInput(cargoLevel) === 'Is a Number' &&
-      fuelLevel < 10000 &&
-      cargoLevel > 10000
+      validatedFuelLevel === 'Empty' ||
+      validatedFuelLevel === 'Not a Number'
     ) {
-      list.style.visibility = 'visible';
-      h2.style.color = 'rgb(199, 37, 78)';
-      list.innerHTML = `
-        <div id="launchStatusCheck">
-            <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
-            <div  id="faultyItems" data-testid="faultyItems">
-                <ol>
-                    <li id="pilotStatus" data-testid="pilotStatus">Pilot ${pilot} is ready for launch</li>
-                    <li id="copilotStatus" data-testid="copilotStatus">Co-pilot ${copilot} is ready for launch</li>
-                    <li id="fuelStatus" data-testid="fuelStatus">Fuel level too low for launch</li>
-                    <li id="cargoStatus" data-testid="cargoStatus">Cargo mass too heavy for launch</li>
-                </ol>
-            </div>
-        </div>
-        `;
+      window.alert('That is not a valid fuel level!');
+      faultyItems.style.visibility = 'visible';
+      fuelStatus.innerHTML = 'No fuel status!';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
     } else if (
-      validateInput(pilot) === 'Is a String' &&
-      validateInput(copilot) === 'Is a String' &&
-      validateInput(fuelLevel) === 'Is a Number' &&
-      validateInput(cargoLevel) === 'Is a Number' &&
-      fuelLevel >= 10000 &&
-      cargoLevel > 10000
+      validatedFuelLevel === 'Is a Number' &&
+      Number(fuelLevelInput.value) < 10000
     ) {
-      list.style.visibility = 'visible';
-      h2.style.color = 'rgb(199, 37, 78)';
-      list.innerHTML = `
-        <div id="launchStatusCheck">
-            <h2 id="launchStatus" data-testid="launchStatus">Shuttle not ready for launch</h2>
-            <div  id="faultyItems" data-testid="faultyItems">
-                <ol>
-                    <li id="pilotStatus" data-testid="pilotStatus">Pilot ${pilot} is ready for launch</li>
-                    <li id="copilotStatus" data-testid="copilotStatus">Co-pilot ${copilot} is ready for launch</li>
-                    <li id="fuelStatus" data-testid="fuelStatus">Fuel level high enough for launch</li>
-                    <li id="cargoStatus" data-testid="cargoStatus">Cargo mass too heavy for launch</li>
-                </ol>
-            </div>
-        </div>
-        `;
+      window.alert('Fuel level too low for launch!');
+      faultyItems.style.visibility = 'visible';
+      fuelStatus.innerHTML = 'Fuel level too low for launch';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
     } else if (
-      validateInput(pilotInput.value) === 'Empty' ||
-      validateInput(copilotInput.value) === 'Empty' ||
-      validateInput(fuelLevelInput.value) === 'Not a Number' ||
-      validateInput(cargoLevelInput.value) === 'Not a Number'
+      validatedFuelLevel === 'Is a Number' &&
+      Number(fuelLevelInput.value) >= 10000
     ) {
-      document.alert('You must complete all fields of the checklist form!');
-      event.preventDefault();
+      fuelStatus.innerHTML = 'Fuel level high enough for launch';
+    } else if (
+      validatedCargoLevel === 'Empty' ||
+      validatedCargoLevel === 'Not a Number'
+    ) {
+      window.alert('That is not a valid cargo level!');
+      faultyItems.style.visibility = 'visible';
+      cargoStatus.innerHTML = 'No cargo status!';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
+    } else if (
+      validatedCargoLevel === 'Is a Number' &&
+      Number(cargoLevelInput.value) > 10000
+    ) {
+      faultyItems.style.visibility = 'visible';
+      cargoStatus.innerHTML = 'Cargo mass too heavy for launch';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(199, 37, 78)';
+    } else if (
+      validatedCargoLevel === 'Is a Number' &&
+      Number(fuelLevelInput.value) <= 10000
+    ) {
+      cargoStatus.innerHTML = 'Cargo mass low enough for launch';
+    }
+
+    if (launchStatus.innerHTML !== 'Shuttle Not Ready for Launch') {
+      faultyItems.style.visibility = 'visible';
+      launchStatus.innerHTML = 'Shuttle Not Ready for Launch';
+      launchStatus.style.color = 'rgb(65, 159, 106)';
+      pilotStatus.innerHTML = `Pilot ${pilotInput.value} ready for launch!`;
+      copilotStatus.innerHTML = `Co-Pilot ${copilotInput.value} ready for launch!`;
     }
   });
 }
@@ -159,7 +139,4 @@ function pickPlanet(planets) {
   return planets[Math.floor(Math.random() * planets.length)];
 }
 
-module.exports.addDestinationInfo() = addDestinationInfo;
-module.exports.pickPlanet = pickPlanet;
-module.exports.myFetch = myFetch;
-module.exports.formSubmission = formSubmission;
+export { pickPlanet, myFetch, formSubmission, addDestinationInfo };
