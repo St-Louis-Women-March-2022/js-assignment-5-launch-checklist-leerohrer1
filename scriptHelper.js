@@ -1,5 +1,5 @@
 // Write your helper functions here!
-import fetch from "node-fetch";
+const { default: fetch } = require("node-fetch");
 
 function addDestinationInfo(
   document,
