@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "grading.js",
+  "type": "commonjs",
   "scripts": {
     "test": "jasmine",
     "test-grading-dom": "jasmine spec/grading-dom.spec.js",
@@ -14,11 +15,12 @@
   "devDependencies": {
     "@testing-library/dom": "^7.29.0",
     "@testing-library/jasmine-dom": "^1.2.0",
+    "browserify": "^17.0.0",
     "isomorphic-fetch": "^3.0.0",
-    "jasmine": "^3.6.3",
-    "browserify": "^17.0.0"
+    "jasmine": "^3.6.3"
   },
   "dependencies": {
-    "jsdom": "^16.4.0"
+    "jsdom": "^16.4.0",
+    "node-fetch": "^2.6.1"
   }
 }
